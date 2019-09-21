@@ -1,5 +1,5 @@
-notepad
-functionality:
-  Record
-  Link
+notepad.
+Functionality:
+  Record,
+  Link,
   Task
