@@ -22,5 +22,20 @@ class Task < Post
     deadline = "Крайний срок: #{@due_date}"
     return [deadline, @text, time_string ]
   end
+
+  def to_db_hash
+    return super.merge (
+    {
+      'text' => @text,
+      'due_date' => @due_date.to_s
+    }
+                       )
+  end
+  def load_data(data_hash)
+    super(data_hash) #сперва дергаем родительский метод для инициализации общих полей
+
+    #теперь прописываем свое специфичное поле
+    @due_date = Date.parse(data_hash['due_date'])
+  end
 end
 

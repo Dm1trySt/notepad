@@ -3,10 +3,10 @@ require_relative 'link.rb'
 require_relative 'task.rb'
 require_relative 'memo.rb'
 
-puts "Привет, я твой блокнот! "
+puts "Привет, я твой блокнот! Версия 2 + Sqlite"
 puts "Что хотите записать в блокнот?"
 
-choices = Post.post_types
+choices = Post.post_types.keys
 
 choice = -1
 
@@ -19,10 +19,10 @@ until choice >=0 && choice <choices.size
   choice =STDIN.gets.chomp.to_i
 end
 
-entry = Post.create(choice)
+entry = Post.create(choices[choice])
 
 entry.read_from_console
 
-entry.save
+id = entry.save_to_db
 
-puts "Ура, запись сохранена"
+puts "Ура, запись сохранена, id = #{id}"
