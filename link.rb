@@ -5,6 +5,7 @@ class Link < Post
     @url = ''
   end
 
+  # Ввод ссылки
   def read_from_console
     puts"Адрес ссылки:"
     @url = STDIN.gets.chomp
@@ -13,13 +14,18 @@ class Link < Post
     @text=STDIN.gets.chomp
   end
 
+  # Возвращает содержимое в виде даты + само содержимое
   def to_strings
     time_string = "Создано: #{@created_at.strftime("%Y.%m.%d_%H:%M:%S.txt")}  \n\r \n\r"
 
     return [@url, @text, time_string]
   end
 
+  # Запись данных в хэш массив
   def to_db_hash
+
+    # super - наследуем переменные метода у родительского класса
+    # .merge - объединяет 2 хэш массива в 1 (в нашем случае хэш массив родительский и дочерний)
     return super.merge (
                          {
                            'text' => @text,

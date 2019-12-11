@@ -11,6 +11,7 @@ require 'optparse'
 #Все наши опции будут записаны сюда
 options = {}
 
+# Вывод информации по ключу -h
 OptionParser.new do |opt|
   opt.banner = 'Usage: read.rb [options]'
 
@@ -25,8 +26,17 @@ OptionParser.new do |opt|
 
 end.parse!
 
-result = Post.find(options[:limit], options[:type], options[:id])
+# Запись данных из БД по введенным нам критериям
+id = :id
+result = if !options[:id].nil?
+           Post.find_by_id(options[:id])
+         else
+           Post.find_all(options[:limit], options[:type])
+         end
 
+
+# Провекра вызов конкретного класса или всей таблицы
+# .is_a? - является ли классом ?
 if result.is_a? Post
   puts "Запись #{result.class.name}, id= #{options[:id]}"
 
@@ -35,13 +45,15 @@ if result.is_a? Post
   end
 else # показываем таблицу результатов
 
-  print "| id\t| @type\t|  @created_at\t\t\t|  @text \t\t\t| @url\t\t| @due_date \t "
+  print "| id\t| @type\t|  @created_at\t\t\t\t\t|  @text \t\t\t| @url\t\t| @due_date \t "
 
   result.each do |row|
     puts
     # puts '_'*80
     row.each do |element|
 
+      # Выводим содержимое, но при этом убирая все переносы на новую строку
+      # и сокращая выведенную информацию до 40 символов
       print "|  #{element.to_s.delete("\\n\\r")[0..40]}\t"
     end
   end

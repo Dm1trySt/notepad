@@ -1,3 +1,4 @@
+# 'date' - позволяет преобразовывать строки в даты
 require 'date'
 class Task < Post
   def initialize
@@ -6,6 +7,7 @@ class Task < Post
     @due_date = Time.now
   end
 
+  # Ввод задачи
   def read_from_console
     puts "Что нужно сделать?"
     @text = STDIN.gets.chomp
@@ -13,9 +15,11 @@ class Task < Post
     puts "К какому числу? Укажите дату в формате ДД.ММ.ГГГГ, например 23.09.2007"
     input = STDIN.gets.chomp
 
+    # Date.parse - преобразовывает текст в дату
     @due_date = Date.parse(input)
   end
 
+  # Возвращает содержимое в виде даты + само содержимое
   def to_strings
     time_string = "Создано: #{@created_at.strftime("%Y.%m.%d_%H:%M:%S.txt")}  \n\r \n\r"
 
@@ -23,7 +27,11 @@ class Task < Post
     return [deadline, @text, time_string ]
   end
 
+  # Запись данных в хэш массив
   def to_db_hash
+
+    # super - наследуем переменные метода у родительского класса
+    # .merge - объединяет 2 хэш массива в 1 (в нашем случае хэш массив родительский и дочерний)
     return super.merge (
     {
       'text' => @text,
